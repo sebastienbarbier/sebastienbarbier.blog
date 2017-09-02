@@ -100,5 +100,9 @@ ENV/
 # mypy
 .mypy_cache/
 
+# Virtualenv
+apps/
+
 # pelican output folder
-output
+output/
+
