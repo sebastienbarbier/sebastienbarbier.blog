@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block head %}
+  	{{ super() }}
+	<link rel="alternate" href="https://blog.sebastienbarbier.com" hreflang="en" />
+	<link rel="alternate" href="https://blog.sebastienbarbier.fr" hreflang="fr" />
+{% endblock %}
+
+{% block content %}
+<aside>
+	<ul>
+	{% for p in pages %}
+		<li><a href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a></li>
+    {% endfor %}
+	</ul>
+</aside>
+
+<main>
+	<header>
+		<ul>
+			<li><a href="{{ SITEURL }}/{{ FEED_RSS }}">rss</a></li>
+			{% if DEFAULT_LANG == 'fr' %}<li><a href="{{ I18N_SUBSITES.en.SITEURL }}">English version</a></li>{% endif %}
+			{% if DEFAULT_LANG == 'en' %}<li><a href="{{ I18N_SUBSITES.fr.SITEURL }}">Version française</a></li>{% endif %}
+		</ul>
+	</header>
+	{% if dates|length > 0 %}
+		<ul>
+		{% for article in dates %}
+		    <li><a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark" title="{{ article.title|striptags }}">
+		    	<h2>{{ article.title }}</h2>
+				{% if DEFAULT_LANG == 'fr' %}<p>{{ article.date | strftime('%d %b %Y') }}</p>{% endif %}
+				{% if DEFAULT_LANG == 'en' %}<p>{{ article.date | strftime('%b %d, %Y') }}</p>{% endif %}
+		    	<p>{{ article.summary }}</p>
+		    </a></li>
+		{% endfor %}
+		</ul>
+	{% else %}
+	<div class="centered">
+			{% if DEFAULT_LANG == 'fr' %}<p>Aucun article</p>{% endif %}
+			{% if DEFAULT_LANG == 'en' %}<p>No article yet</p>{% endif %}
+	</div>
+	{% endif %}
+
+	<footer>
+		<ul>
+		{% for p in pages %}
+			<li><a href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a></li>
+	    {% endfor %}
+	    </ul>
+	</footer>
+</main>
+{% endblock content %}

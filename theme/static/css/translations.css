@@ -1,0 +1,28 @@
+
+ul.translations {
+	position: absolute;
+	top: 35px;
+	right: 60px;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	z-index: 3;
+	padding: 0px;
+	margin: 0px;
+}
+ul.translations li { list-style: none; padding: 8px 0 8px 0px;}
+ul.translations li a { font-weight: bold; font-family: 'open_sansregular'; text-decoration: none; color: #444; border: solid 1px #444; border-radius: 4px; padding: 0px 6px 1px 6px; font-size: 0.8em;}
+
+
+@media screen and (max-width: 599px) {
+	ul.translations  {
+		top: 17px;
+		right: 30px;
+	}
+}
+@media screen and (min-width: 600px) and (max-width: 999px) {
+	ul.translations  {
+		top: 28px;
+		right: 30px;
+	}
+}

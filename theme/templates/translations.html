@@ -1,0 +1,22 @@
+{% macro translations_for(article) %}
+{% if article.translations %}
+<ul class="translations">
+	{% for translation in article.translations %}
+	<li>
+		<a href="{{ I18N_SUBSITES[translation.lang].SITEURL }}/{{ translation.url }}">
+		{% if translation.lang == 'fr' %}
+			Version française
+		{% else %}
+			{% if translation.lang == 'en' %}
+				English version
+			{% else %}
+				{{ translation.lang }}
+			{% endif %}
+		{% endif %}
+		</a>
+	</li>
+	{% endfor %}
+</ul>
+{% endif %}
+{% endmacro %}
+

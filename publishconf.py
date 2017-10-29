@@ -10,11 +10,25 @@ import sys
 sys.path.append(os.curdir)
 from pelicanconf import *
 
-SITEURL = 'https://blog.sebastienbarbier.com'
-RELATIVE_URLS = False
+I18N_SUBSITES = {
+    'fr': {
+        'SITEURL': 'https://blog.sebastienbarbier.fr',
+        'THEME': 'theme',
+        'THEME_STATIC_DIR': 'theme',
+        'THEME_STATIC_PATHS': ['static']
+    },
+    'en': {
+        'SITEURL': 'https://blog.sebastienbarbier.com',
+        'THEME': 'theme',
+        'THEME_STATIC_DIR': 'theme',
+        'THEME_STATIC_PATHS': ['static']
+    }
+}
 
-FEED_ALL_ATOM = 'feeds/all.atom.xml'
-CATEGORY_FEED_ATOM = 'feeds/%s.atom.xml'
+RELATIVE_URLS = True
+
+# FEED_ALL_ATOM = 'feeds/all.atom.xml'
+# CATEGORY_FEED_ATOM = 'feeds/%s.atom.xml'
 
 DELETE_OUTPUT_DIRECTORY = True
 

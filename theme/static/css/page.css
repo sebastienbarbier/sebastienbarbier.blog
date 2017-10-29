@@ -1,0 +1,55 @@
+#page {
+	overflow: auto;
+	position: relative;
+	width: 100%;
+	padding: 150px 15vw 80px 35vw;
+	margin-bottom: 80px;
+	font-size: 1em;
+	font-family: 'latin_modern_roman10_regular';
+  	-webkit-overflow-scrolling: touch;
+}
+
+@media screen and (max-width: 599px) {
+	#page {
+		padding: 150px 20px 80px 20px;
+		font-size: 0.9em;
+	}
+}
+
+@media screen and (min-width: 600px) and (max-width: 999px) {
+	#page {
+		padding: 150px 30px 80px 30px;
+	}
+}
+
+#page h1,
+#page h2,
+#page h3,
+#page h4,
+#page h5,
+#page h6 {
+	font-family: 'open_sansbold';
+}
+
+#page h1 {
+	font-size: 2em;
+}
+
+#page p {
+	font-size: 1.1em;
+}
+
+
+#page a {
+	color: #333;
+	text-decoration-style: dotted;
+	text-decoration-skip: ink;
+}
+
+@media screen and (max-width: 599px) {
+
+}
+
+@media screen and (min-width: 600px) and (max-width: 999px) {
+
+}
