@@ -18,7 +18,7 @@ I18N_SUBSITES = {
         'THEME_STATIC_PATHS': ['static']
     },
     'en': {
-        'SITEURL': '',
+        'SITEURL': '/',
         'THEME': 'theme',
         'THEME_STATIC_DIR': 'theme',
         'THEME_STATIC_PATHS': ['static']
