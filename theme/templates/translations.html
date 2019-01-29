@@ -3,7 +3,7 @@
 <ul class="translations">
 	{% for translation in article.translations %}
 	<li>
-		<a href="{{ translation.url }}">
+		<a href="/{{ translation.url }}">
 		{% if translation.lang == 'fr' %}
 			Version française
 		{% else %}
