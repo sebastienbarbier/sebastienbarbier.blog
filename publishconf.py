@@ -12,7 +12,7 @@ from pelicanconf import *
 
 I18N_SUBSITES = {
     'fr': {
-        'SITEURL': 'https://blog.sebastienbarbier.fr',
+        'SITEURL': 'https://blog.sebastienbarbier.com/fr',
         'THEME': 'theme',
         'THEME_STATIC_DIR': 'theme',
         'THEME_STATIC_PATHS': ['static']
