@@ -18,10 +18,10 @@
 
 	{% if article.translations %}
 		{% if DEFAULT_LANG == 'fr' %}
-		<link rel="alternate" href="{{ I18N_SUBSITES.fr.SITEURL }}/{{ article.url }}" hreflang="fr" />
+		<link rel="alternate" href="{{ article.url }}" hreflang="fr" />
 		{% endif %}
 		{% if DEFAULT_LANG == 'en' %}
-		<link rel="alternate" href="{{ I18N_SUBSITES.en.SITEURL }}/{{ article.url }}" hreflang="en" />
+		<link rel="alternate" href="{{ article.url }}" hreflang="en" />
 		{% endif %}
 
 		{% for translation in article.translations %}
