@@ -27,7 +27,7 @@
 		{% for translation in article.translations %}
 		<link
 			rel="alternate"
-			href="{{ I18N_SUBSITES[translation.lang].SITEURL }}/{{ translation.url.replace('./', '') }}"
+			href="{{ translation.url.replace('./', '') }}"
 			hreflang="{{ translation.lang }}" />
 		{% endfor %}
 
