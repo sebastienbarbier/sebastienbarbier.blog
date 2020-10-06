@@ -1,2 +1,0 @@
-# sebastienbarbier.blog
-Personnal blog
