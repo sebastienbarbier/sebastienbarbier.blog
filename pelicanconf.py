@@ -18,15 +18,25 @@ TRANSLATION_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
+ARTICLE_URL = '{date:%Y}/{date:%m}/{date:%d}/{slug}/'
+ARTICLE_SAVE_AS = '{date:%Y}/{date:%m}/{date:%d}/{slug}/index.html'
+PAGE_URL = 'pages/{slug}/'
+PAGE_SAVE_AS = 'pages/{slug}/index.html'
+CATEGORY_URL = 'category/{slug}/'
+CATEGORY_SAVE_AS = 'category/{slug}/index.html'
+AUTHOR_URL = 'author/{slug}/'
+AUTHOR_SAVE_AS = 'author/{slug}/index.html'
+CATEGORY_URL = 'category/{slug}/'
+CATEGORY_SAVE_AS = 'category/{slug}/index.html'
+TAG_URL = 'tag/{slug}/'
+TAG_SAVE_AS = 'tag/{slug}/index.html'
+
 # Blogroll
-LINKS = (('Pelican', 'https://getpelican.com/'),
-         ('Python.org', 'https://www.python.org/'),
-         ('Jinja2', 'https://palletsprojects.com/p/jinja/'),
-         ('You can modify those links in your config file', '#'),)
+LINKS = (('sebastienbarbier.com', 'https://sebastienbarbier.com/'),)
 
 # Social widget
-SOCIAL = (('You can add links in your config file', '#'),
-          ('Another social link', '#'),)
+SOCIAL = (('Twitter', 'https://www.twitter.com/SebBarbier'),
+          ('Instagram', 'https://www.instagram.com/sebastienbarbier/'),)
 
 DEFAULT_PAGINATION = 10
 
