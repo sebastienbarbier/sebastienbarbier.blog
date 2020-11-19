@@ -6,7 +6,7 @@ Slug: about-this-blog
 Authors: Sébastien Barbier
 Summary: Not sure how you end up here but hey, hi! My name is Sébastien Barbier and this is a post explaining what this blog is going to be about.
 
-Dear reader, let's save time and skip the cliche first post about how awesome and meaningful my blog is going to be. 
+Let's save time and skip the cliche first post about how awesome and meaningful my blog is going to be. 
 My guess is you got lost on the web procrastinating, with lots of great things to do, so let's make this introduction short and efficient.
 
 My name is [Sébastien Barbier](https://sebastienbarbier.com), I'm a developer and build tools on the web to solve problems. 
