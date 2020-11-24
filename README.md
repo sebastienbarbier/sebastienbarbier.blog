@@ -1,6 +1,6 @@
 # sebastienbarbier.blog
 
-This repository host [blog.sebastienbarbier.com](blog.sebastienbarbier.com). 
+This repository host [blog.sebastienbarbier.com](https://blog.sebastienbarbier.com). 
 
 ## Local installation using virtualenv 
 
