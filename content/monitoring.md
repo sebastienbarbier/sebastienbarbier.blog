@@ -3,6 +3,7 @@ Date: 2020-12-18
 Category: Minotring
 Tags: blog
 Slug: monitoring
+Status: draft
 Authors: Sébastien Barbier
 Summary: First post of a series regarding my implementation to solve the monitoring of my services
 
