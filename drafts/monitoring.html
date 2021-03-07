@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="generator" content="Pelican" />
+        <title>Monitoring</title>
+        <link rel="stylesheet" href="https://blog.sebastienbarbier.com/theme/css/main.css" />
+        <link href="https://blog.sebastienbarbier.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="sebastienbarbier.blog Atom Feed" />
+        <meta name="description" content="First post of a series regarding my implementation to solve the monitoring of my services" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://blog.sebastienbarbier.com/">sebastienbarbier.blog</a></h1>
+                <nav><ul>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://blog.sebastienbarbier.com/drafts/monitoring.html" rel="bookmark"
+           title="Permalink to Monitoring">Monitoring</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2020-12-18T00:00:00+01:00">
+                Published: Fri 18 December 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://blog.sebastienbarbier.com/author/sebastien-barbier/">Sébastien Barbier</a>
+        </address>
+<p>In <a href="https://blog.sebastienbarbier.com/category/minotring/">Minotring</a>.</p>
+<p>tags: <a href="https://blog.sebastienbarbier.com/tag/blog/">blog</a> </p>
+</footer><!-- /.post-info -->      <p>My personal website broke couple weeks ago without me noticing. I did not put in place any monitoring, and now realise that was a bad idea. There is many services offerint such service like <a href="https://hyperping.io/">hyperping</a>, <a href="https://uptimerobot.com/">UptimeRobot</a>, or <a href="https://status.io/">status.io</a>, but even if pricing can be really cheap I feld limited regarding my will to implement some sorts of fancy dashboarding.</p>
+<p>If I first quickly subscribe one of those to fix this, here is my experiment regarding implementing a home made open source solution.</p>
+<p>My first step is going to be a docker-compose with static config files to monitor current infra. Instead of building everything by myself, I will be using existing libraries and especially <a href="prometheus.io">https://prometheus.io/</a> and the <a href="https://github.com/prometheus/blackbox_exporter">black explorer plugin</a> which can generate metrics for a public http url. First version will also provide a dashboard with <a href="https://grafana.com/">Grafana</a> so I don't have to implement anything. Also will be using <a href="https://prometheus.io/docs/guides/node-exporter/">node-explorer</a> to keep an eye on the CPU/memory load. When done, next step will be to make it as a Saas to eventually generate income.</p>
+<h2>Infrastructure</h2>
+<p>I know how easy it is to spend money on new side projects, no more I said. My first idea was to go fully local using  araspberrypi but finally out of commodity decided to go with a cheap <a href="https://www.ovhcloud.com/fr/vps/">virtual private server instance at OVH</a> which cost as low as 5.52€ ttc / month.</p>
+<p>Prometheus can store data locally, but having in mind to go public as a service and scale may be horizontally a centrallized Postgresql instance might come soon.</p>
+<h2>Target implementation</h2>
+<p>Prometheuse, Black explorer, and Grafana all come with ready to use docker image. My goal will be to build a single command install protocol to easily deploy and reuse it. I will also try to make it open source and easy to reuse by others.</p>
+<h2>Node Explorer</h2>
+<p>Keeping an eye on each server ressource, <a href="https://prometheus.io/docs/guides/node-exporter/">node-explorer</a> can be used to generate prometheus metrics.</p>
+<p>Node-exporter can run on background but need to restart with server. TODO</p>
+<h2>Prometheus</h2>
+<p>Using docker image, prometheus can run locally really easiy</p>
+<p>User : user-Ke78s92vCQ78
+Mdp : ys4hC7FMmPwxcgj9xV7QNPDQZXHMQ2bm</p>
+<h2>INSTALLATION</h2>
+<p>sudo adduser sbarbier
+sudo deluser ubuntu</p>
+<p>install docker : https://docs.docker.com/engine/install/ubuntu/</p>
+<h2>LOKI</h2>
+<p>https://medium.com/@moeenz/dockerized-django-logging-via-grafana-loki-48464d13f8cb</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="https://sebastienbarbier.com/">sebastienbarbier.com</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://blog.sebastienbarbier.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://www.twitter.com/SebBarbier">Twitter</a></li>
+                            <li><a href="https://www.instagram.com/sebastienbarbier/">Instagram</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
