@@ -172,7 +172,7 @@ services:
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"   
 ```
 
-Init letsencrypt script to generate certificates. This will generate self certified script to enable nginx with 443 port open to allow letsencrypt to access port 80 to generate certificate then restart nginx using docker-compose to be prod ready.
+Init letsencrypt script from [studentenhuisDS4/ds4reboot](https://github.com/studentenhuisDS4/ds4reboot/wiki/Docker-and-production-info) to generate certificates. This will generate self certified script to enable nginx with 443 port open to allow letsencrypt to access port 80 to generate certificate then restart nginx using docker-compose to be prod ready.
 
 ``` bash
 #!/bin/bash
