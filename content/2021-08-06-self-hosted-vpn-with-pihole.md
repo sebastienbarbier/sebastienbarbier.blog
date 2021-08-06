@@ -172,6 +172,47 @@ services:
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"   
 ```
 
+Then configure nginx with a .conf file
+
+``` bash
+server {
+    listen 80;
+    server_name dns.sebastienbarbier.com;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+# # https://medium.com/@pentacent/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71
+server {
+    listen 443 ssl http2;
+    server_name dns.sebastienbarbier.com;
+    try_files $uri/ $uri;
+
+    ssl_certificate /etc/letsencrypt/live/sebastienbarbier.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/sebastienbarbier.com/privkey.pem;
+
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        proxy_set_header   X-Real-IP        $remote_addr;
+        proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+        proxy_set_header   Host             $host;
+        proxy_pass http://pihole:80/;
+    }
+}
+```
+
 Init letsencrypt script from [studentenhuisDS4/ds4reboot](https://github.com/studentenhuisDS4/ds4reboot/wiki/Docker-and-production-info) to generate certificates. This will generate self certified script to enable nginx with 443 port open to allow letsencrypt to access port 80 to generate certificate then restart nginx using docker-compose to be prod ready.
 
 ``` bash
