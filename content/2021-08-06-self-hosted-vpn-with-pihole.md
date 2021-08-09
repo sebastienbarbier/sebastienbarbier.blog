@@ -6,23 +6,52 @@ Slug: self-hosted-vpn-with-pihole
 Authors: Sébastien Barbier
 Summary: Secure your internet with a self hosted vpn
 
-Travelling involve the need to rely on public wifi which can often be insecure. A VPN offer protection by encrypting your communications, but needs to fully trust its provider. One cheap and easy solution consist of installing a self-hosted VPN on a virtual private server (VPS). This article is how I did it.
+Travelling involve the need to rely on public wifi which can often be insecure. A VPN offer protection by encrypting your communications, but needs full trust in its provider. One cheap and easy solution consist of installing a self-hosted VPN on a virtual private server. This article is how I did it.
+
+*Prerequirement: this article assume basic knowledge in unix commands, and docker.*
 
 ## Virtual private server
 
-Any publicly available server can host your VPN but went with a dedicated VPS instance from [OVH](https://www.ovh.com) (🇫🇷). I personnaly pay mine **5,52 euros** a month at OVH with *1 vCore, 2 Go RAM, 40 Go SSD NVMe, 250 Mbit/s unlimited*. I also used in the past [scaleway](ttps://www.scaleway.com)(🇫🇷), or [exoscale](https://www.exoscale.com/) (🇨🇭), but would recommand to look for a local provider near your location for better performances. This will also have an impact on geolocalised content within most website.
+Any server with a public IP can host your VPN, but online companies offer chear dedicated virtual private server (VPS) on linux. I personnaly went for a **5,52 euros/month** at [OVH](https://www.ovh.com) (🇫🇷) with *1 vCore, 2 Go RAM, 40 Go SSD NVMe, 250 Mbit/s unlimited*. Alternatives work, as [scaleway](ttps://www.scaleway.com)(🇫🇷), or [exoscale](https://www.exoscale.com/) (🇨🇭), but would go for a local provider near your location for better performances. This will also have an impact on geolocalised content within most website.
 
-With such configuration, most website dientify your IP as from a server and often disable some content (one example being subscribing to Netflix with a foreign pricing). For such case I personnaly use my mobile phone on roaming which provide a perfectly valid IP address from my home country and a legitimate way to avoid such issue.
+Also, most website identify your IP as from a server and often disable some content (one example being subscribing to Netflix with a foreign pricing). For such case I personnaly use my mobile phone on roaming which provide a perfectly valid IP address from my home country and a legitimate way to avoid such issue.
 
-Also, please be aware a self hosted server require maintenance and updates to garanty its full security.
+Please be aware a self hosted server require maintenance and updates to garanty its full security.
 
-## Openvpn
+## Docker and docker-compose
 
-After connectin our server with SSH, our goal will be to install the [kylemanna/docker-openvpn](https://github.com/kylemanna/docker-openvpn) image on our machine using docker. Prerequirement are that [docker is available](https://docs.docker.com/engine/install/) and would also go for docker-compose out of simplicity and foollow instructions as describe within [kylemanna/docker-openvpn/docs/docker-compose](https://github.com/kylemanna/docker-openvpn/blob/master/docs/docker-compose.md).
+All setup is describe within a docker-compose file to deploy and configure as code. 
 
-```yaml
-version: '2'
+Current setup is made of :
+
+- **kylemanna/openvpn** for VPN
+- **pihole/pihole:latest** for DNS blocking
+- **nginx** to handle http request
+- **certbot** to handle lets's encrypt certificate automatically.
+
+``` yaml
+version: '3'
 services:
+  nginx:
+    image: "nginx:latest"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/:/etc/nginx/conf.d/
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+      - /var/log:/var/log
+    links:
+      - openvpn
+      - pihole
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+  certbot:
+    image: certbot/certbot
+    volumes:  
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"    
   openvpn:
     cap_add:
      - NET_ADMIN
@@ -30,10 +59,35 @@ services:
     container_name: openvpn
     ports:
      - "1194:1194/udp"
+    links:
+      - pihole
     restart: always
     volumes:
      - ./openvpn-data/conf:/etc/openvpn
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    # ports:
+    #  - "53:53/tcp"
+    #  - "53:53/udp"
+    #  - "67:67/udp"
+    environment:
+      TZ: 'America/Chicago'
+      VIRTUAL_HOST: dns.sebastienbarbier.com
+
+    volumes:
+      - './pihole/etc-pihole/:/etc/pihole/'
+      - './pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
+    # Recommended but not required (DHCP needs NET_ADMIN)
+    #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped
 ```
+
+## Openvpn
+
+After connectin our server with SSH, our goal will be to install the [kylemanna/docker-openvpn](https://github.com/kylemanna/docker-openvpn) image on our machine using docker. Prerequirement are that [docker is available](https://docs.docker.com/engine/install/) and would also go for docker-compose out of simplicity and foollow instructions as describe within [kylemanna/docker-openvpn/docs/docker-compose](https://github.com/kylemanna/docker-openvpn/blob/master/docs/docker-compose.md).
 
 Initialize the configuration files and certificates
 ``` bash
@@ -77,36 +131,11 @@ docker-compose run --rm openvpn ovpn_revokeclient $CLIENTNAME
 docker-compose run --rm openvpn ovpn_revokeclient $CLIENTNAME remove
 ```
 
-You should now be able to get the .ovpn file on your machien using `scp sbarbier@vpn.example.com:my-folder/client-name.ovpn .` then login with any openvpn client.
+You should now be able to get the .ovpn file on your machine using `scp sbarbier@vpn.example.com:my-folder/client-name.ovpn .` then login with any openvpn client.
 
 ## Pihole
 
 Pihole also ship as a docker image and can be installed next to openvpn. It is all describe within the [pi-hole/docker-pi-hole](https://github.com/pi-hole/docker-pi-hole/#running-pi-hole-docker) repository.
-
-``` yaml
-version: "3"
-services:
-  pihole:
-    container_name: pihole
-    image: pihole/pihole:latest
-    ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-      - "67:67/udp"
-      - "80:80/tcp"
-    environment:
-      TZ: 'America/Chicago'
-      # WEBPASSWORD: 'set a secure password here or it will be random'
-    # Volumes store your data between container upgrades
-    volumes:
-      - './etc-pihole/:/etc/pihole/'
-      - './etc-dnsmasq.d/:/etc/dnsmasq.d/'
-    # Recommended but not required (DHCP needs NET_ADMIN)
-    #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
-    cap_add:
-      - NET_ADMIN
-    restart: unless-stopped
-```
 
 Adding a links value to openvpn service that way openvpn can access the
 
@@ -147,32 +176,7 @@ One improvement would be to have docker providing static ip for this container b
 
 ## Nginx with https access to pi-hole admin panel
 
-``` yaml
-version: '3'
-services:
-  nginx:
-    image: "nginx:latest"
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx/:/etc/nginx/conf.d/
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-      - /var/log:/var/log
-    links:
-      - openvpn
-      - pihole
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-  certbot:
-    image: certbot/certbot
-    volumes:  
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"   
-```
-
-Then configure nginx with a .conf file
+nginx is configured with a .conf file
 
 ``` bash
 server {
@@ -296,13 +300,11 @@ echo
 
 echo "### Reloading nginx ..."
 docker-compose exec nginx nginx -s reload
-
-
 ```
 
 ## and more ...
 
-I personnaly save my overall config within a github repo you can see [https://github.com/sebastienbarbier/config-proxy](https://github.com/sebastienbarbier/config-proxy)
+I personnaly save my overall config within a github repo which you can see [https://github.com/sebastienbarbier/config-proxy](https://github.com/sebastienbarbier/config-proxy)
 
 Now having a working private network with pi-hole https panel publicaly available but ports 53 and 67 VPN only, you have a pretty strong infrastructure to work with.
 
