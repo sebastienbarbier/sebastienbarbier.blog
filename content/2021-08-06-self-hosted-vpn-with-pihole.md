@@ -6,7 +6,7 @@ Slug: self-hosted-vpn-with-pihole
 Authors: Sébastien Barbier
 Summary: Secure your internet with a self hosted vpn
 
-Travelling involve the need to rely on public wifi which can often be insecure. A VPN offer protection by encrypting your communications, but needs full trust in its provider. One cheap and easy solution consist of installing a self-hosted VPN on a virtual private server. This article is how I did it.
+Travelling involve the need to rely on public wifi which can often be insecure. A VPN offer protection by encrypting all communications, but needs full trust within its provider. One solution consist of installing a self-hosted VPN on a virtual private server. This article is how I did it.
 
 *Prerequirement: this article assume basic knowledge in unix commands, and docker.*
 
@@ -20,14 +20,12 @@ Please be aware a self hosted server require maintenance and updates to garanty 
 
 ## Docker and docker-compose
 
-All setup is describe within a docker-compose file to deploy and configure as code. 
+Full setup is composed of 4 docker image describe in a single [docker-compose](https://docs.docker.com/compose/) file to deploy:
 
-Current setup is made of :
-
-- **kylemanna/openvpn** for VPN
-- **pihole/pihole:latest** for DNS blocking
-- **nginx** to handle http request
-- **certbot** to handle lets's encrypt certificate automatically.
+- **[kylemanna/openvpn](https://github.com/kylemanna/docker-openvpn)** for VPN
+- **[pihole/pihole:latest](https://github.com/pi-hole/docker-pi-hole/#running-pi-hole-docker)** for DNS blocking
+- **[nginx](https://hub.docker.com/_/nginx/)** to handle http requests
+- **[certbot](https://hub.docker.com/r/certbot/certbot)** to provide https certificate using lets encrypt
 
 ``` yaml
 version: '3'
@@ -67,14 +65,9 @@ services:
   pihole:
     container_name: pihole
     image: pihole/pihole:latest
-    # ports:
-    #  - "53:53/tcp"
-    #  - "53:53/udp"
-    #  - "67:67/udp"
     environment:
-      TZ: 'America/Chicago'
-      VIRTUAL_HOST: dns.sebastienbarbier.com
-
+      TZ: '   Europe/Zurich'
+      VIRTUAL_HOST: pihole.example.com
     volumes:
       - './pihole/etc-pihole/:/etc/pihole/'
       - './pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
@@ -87,7 +80,9 @@ services:
 
 ## Openvpn
 
-After connectin our server with SSH, our goal will be to install the [kylemanna/docker-openvpn](https://github.com/kylemanna/docker-openvpn) image on our machine using docker. Prerequirement are that [docker is available](https://docs.docker.com/engine/install/) and would also go for docker-compose out of simplicity and foollow instructions as describe within [kylemanna/docker-openvpn/docs/docker-compose](https://github.com/kylemanna/docker-openvpn/blob/master/docs/docker-compose.md).
+Using SSH to run our docker-compose file, the [kylemanna/docker-openvpn](https://github.com/kylemanna/docker-openvpn) image will run a plug and play openvpn (ovpn) instance runningon **port 1194**. 
+
+It is requried to initialise ovpn, then generate a client certificate for each device you with to connect.
 
 Initialize the configuration files and certificates
 ``` bash
@@ -131,21 +126,21 @@ docker-compose run --rm openvpn ovpn_revokeclient $CLIENTNAME
 docker-compose run --rm openvpn ovpn_revokeclient $CLIENTNAME remove
 ```
 
-You should now be able to get the .ovpn file on your machine using `scp sbarbier@vpn.example.com:my-folder/client-name.ovpn .` then login with any openvpn client.
+You should now be able to get the .ovpn file on your machine using `scp username@vpn.example.com:my-folder/client-name.ovpn .` then login with any [openvpn client](https://openvpn.net/vpn-client/).
 
 ## Pihole
 
-Pihole also ship as a docker image and can be installed next to openvpn. It is all describe within the [pi-hole/docker-pi-hole](https://github.com/pi-hole/docker-pi-hole/#running-pi-hole-docker) repository.
+Pi-hole is a Linux network-level advertisement and Internet tracker blocking application which acts as a DNS sinkhole. It ships as a [docker image](https://github.com/pi-hole/docker-pi-hole/#running-pi-hole-docker) and will run next to openvpn
 
-Adding a links value to openvpn service that way openvpn can access the
+VPN service is linked to pihole so it can call DNS APIs
 
 ``` yaml
-    links:
-      - pihole
+links:
+  - pihole
 
 ```
 
-Youc an find list of block list available all around the internet. I used the following:
+Block lists are available all around the internet. Those seams well recommanded:
 
 - [https://github.com/mhhakim/pihole-blocklist](https://github.com/mhhakim/pihole-blocklist)
 - [https://avoidthehack.com/best-pihole-blocklists](https://avoidthehack.com/best-pihole-blocklists)
@@ -156,6 +151,8 @@ Password can be reset using
 ```bash
 docker exec -it pihole_container_name pihole -a -p
 ```
+
+### Set default DNS within opvn
 
 To set default DNS ip wihtin open vpn do the following :
 
@@ -172,16 +169,16 @@ Then add within `/openvpn-data/confopenvpn.conf`
 push "dhcp-option DNS 172.22.0.2"
 ```
 
-One improvement would be to have docker providing static ip for this container by defining it within docker-compose. 
+Best would be to have docker providing static ip for this container by defining it within docker-compose. 
 
 ## Nginx with https access to pi-hole admin panel
 
-nginx is configured with a .conf file
+nginx require a .conf file to know 
 
 ``` bash
 server {
     listen 80;
-    server_name dns.sebastienbarbier.com;
+    server_name dns.example.com;
 
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
@@ -195,11 +192,11 @@ server {
 # # https://medium.com/@pentacent/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71
 server {
     listen 443 ssl http2;
-    server_name dns.sebastienbarbier.com;
+    server_name dns.example.com;
     try_files $uri/ $uri;
 
-    ssl_certificate /etc/letsencrypt/live/sebastienbarbier.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/sebastienbarbier.com/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
 
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
@@ -217,7 +214,11 @@ server {
 }
 ```
 
-Init letsencrypt script from [studentenhuisDS4/ds4reboot](https://github.com/studentenhuisDS4/ds4reboot/wiki/Docker-and-production-info) to generate certificates. This will generate self certified script to enable nginx with 443 port open to allow letsencrypt to access port 80 to generate certificate then restart nginx using docker-compose to be prod ready.
+### Generate SSL certificates
+
+[studentenhuisDS4/ds4reboot](https://github.com/studentenhuisDS4/ds4reboot/wiki/Docker-and-production-info) provide a script to generate certificates. 
+
+It will first generate self certified script to enable nginx with 443 port open, then have letsencrypt challenge running to validate certificates. It will also restart nginx using docker-compose to be prod ready without further action required.
 
 ``` bash
 #!/bin/bash
@@ -304,10 +305,10 @@ docker-compose exec nginx nginx -s reload
 
 ## and more ...
 
-I personnaly save my overall config within a github repo which you can see [https://github.com/sebastienbarbier/config-proxy](https://github.com/sebastienbarbier/config-proxy)
+My personnal setup is currently save within a github repo publicly available at [https://github.com/sebastienbarbier/config-proxy](https://github.com/sebastienbarbier/config-proxy)
 
-Now having a working private network with pi-hole https panel publicaly available but ports 53 and 67 VPN only, you have a pretty strong infrastructure to work with.
+You should now be able to run your VPN with all traffic redirected through it, use pihole to block DNS requests, and then access pihole dashboard using https.
 
-One extra idea I like is the idea to connect my Synalogy NAS direclty to the VPN so I can access it from anywhere without public access.
+Next step for me was to connect my Synology NAS direclty to the VPN providing so access from my home without configuring any router or routing.
 
 Hope this was helpful.
