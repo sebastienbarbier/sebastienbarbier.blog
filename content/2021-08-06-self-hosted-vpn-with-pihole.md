@@ -6,21 +6,21 @@ Slug: self-hosted-vpn-with-pihole
 Authors: Sébastien Barbier
 Summary: Secure your internet with a self hosted vpn
 
-Travelling involve the need to rely on public wifi which can often be insecure. A VPN offer protection by encrypting all communications, but needs full trust within its provider. One solution consist of installing a self-hosted VPN on a virtual private server. This article is how I did it.
+Travelling involve the need to rely on public wifi which can often be insecure. As a VPN offer protection by encrypting all communications, it however require full trust within its provider. My solution consists of running a self-hosted VPN on a cheap virtual private server. This article is how I did it.
 
-*Prerequirement: this article assume basic knowledge in unix commands, and docker.*
+*Prerequirement: this article assumes basic knowledges in unix commands and docker.*
 
 ## Virtual private server
 
-Any server with a public IP can host your VPN, but online companies offer chear dedicated virtual private server (VPS) on linux. I personnaly went for a **5,52 euros/month** at [OVH](https://www.ovh.com) (🇫🇷) with *1 vCore, 2 Go RAM, 40 Go SSD NVMe, 250 Mbit/s unlimited*. Alternatives work, as [scaleway](ttps://www.scaleway.com)(🇫🇷), or [exoscale](https://www.exoscale.com/) (🇨🇭), but would go for a local provider near your location for better performances. This will also have an impact on geolocalised content within most website.
+First step consists in looking for a provider to host your virtual private server (VPS) on linux. I personnaly went for a **5,52 euros/month** instance at [OVH](https://www.ovh.com) (🇫🇷) with *1 vCore, 2 Go RAM, 40 Go SSD NVMe, 250 Mbit/s unlimited*. I did successfully use in the past [scaleway](ttps://www.scaleway.com)(🇫🇷) or [exoscale](https://www.exoscale.com/) (🇨🇭), but would recommand to get a provider near your location for better performance. This will also have an impact on geolocalised content within most website.
 
-Also, most website identify your IP as from a server and often disable some content (one example being subscribing to Netflix with a foreign pricing). For such case I personnaly use my mobile phone on roaming which provide a perfectly valid IP address from my home country and a legitimate way to avoid such issue.
+VPN can redirect your traffic, but most website will identify your IP as being from a server and often disable some content. For such case I would personnaly use my mobile phone on roaming which provide a direct IP from my home country and so a legitimate way to avoid such issue.
 
-Please be aware a self hosted server require maintenance and updates to garanty its full security.
+On a last note, please be aware a self hosted server require maintenance and updates to enforce its full security.
 
 ## Docker and docker-compose
 
-Full setup is composed of 4 docker image describe in a single [docker-compose](https://docs.docker.com/compose/) file to deploy:
+Full setup is composed of 4 docker images describe in a single [docker-compose](https://docs.docker.com/compose/) file to deploy:
 
 - **[kylemanna/openvpn](https://github.com/kylemanna/docker-openvpn)** for VPN
 - **[pihole/pihole:latest](https://github.com/pi-hole/docker-pi-hole/#running-pi-hole-docker)** for DNS blocking
@@ -80,9 +80,7 @@ services:
 
 ## Openvpn
 
-Using SSH to run our docker-compose file, the [kylemanna/docker-openvpn](https://github.com/kylemanna/docker-openvpn) image will run a plug and play openvpn (ovpn) instance runningon **port 1194**. 
-
-It is requried to initialise ovpn, then generate a client certificate for each device you with to connect.
+The [kylemanna/docker-openvpn](https://github.com/kylemanna/docker-openvpn) image will run a plug and play openvpn (ovpn) instance on **port 1194**. You will then need to run some configuration. 
 
 Initialize the configuration files and certificates
 ``` bash
@@ -126,13 +124,13 @@ docker-compose run --rm openvpn ovpn_revokeclient $CLIENTNAME
 docker-compose run --rm openvpn ovpn_revokeclient $CLIENTNAME remove
 ```
 
-You should now be able to get the .ovpn file on your machine using `scp username@vpn.example.com:my-folder/client-name.ovpn .` then login with any [openvpn client](https://openvpn.net/vpn-client/).
+Download the `.ovpn` file on your machine using `scp username@vpn.example.com:my-folder/client-name.ovpn .` to connect your VPN using any [openvpn client](https://openvpn.net/vpn-client/).
 
-## Pihole
+## Pi-hole
 
-Pi-hole is a Linux network-level advertisement and Internet tracker blocking application which acts as a DNS sinkhole. It ships as a [docker image](https://github.com/pi-hole/docker-pi-hole/#running-pi-hole-docker) and will run next to openvpn
+Pi-hole is a Linux network-level advertisement and Internet tracker blocking application which acts as a DNS sinkhole. It ships as a [docker image](https://github.com/pi-hole/docker-pi-hole/#running-pi-hole-docker) and will run next to openvpn.
 
-VPN service is linked to pihole so it can call DNS APIs
+VPN service is linked to pi-hole so it can call the DNS APIs
 
 ``` yaml
 links:
@@ -140,7 +138,7 @@ links:
 
 ```
 
-Block lists are available all around the internet. Those seams well recommanded:
+Those are the popular lists I ended up using:
 
 - [https://github.com/mhhakim/pihole-blocklist](https://github.com/mhhakim/pihole-blocklist)
 - [https://avoidthehack.com/best-pihole-blocklists](https://avoidthehack.com/best-pihole-blocklists)
@@ -154,7 +152,7 @@ docker exec -it pihole_container_name pihole -a -p
 
 ### Set default DNS within opvn
 
-To set default DNS ip wihtin open vpn do the following :
+To set default DNS ip within openvpn, you need to know which IP docker assigned to pi-hole:
 
 ```bash
 docker ps
@@ -169,11 +167,11 @@ Then add within `/openvpn-data/confopenvpn.conf`
 push "dhcp-option DNS 172.22.0.2"
 ```
 
-Best would be to have docker providing static ip for this container by defining it within docker-compose. 
+One suggestion for improvement would be to have docker providing static ip for this container.
 
 ## Nginx with https access to pi-hole admin panel
 
-nginx require a .conf file to know 
+nginx require a `.conf` file to expose pi-hole.
 
 ``` bash
 server {
@@ -218,7 +216,7 @@ server {
 
 [studentenhuisDS4/ds4reboot](https://github.com/studentenhuisDS4/ds4reboot/wiki/Docker-and-production-info) provide a script to generate certificates. 
 
-It will first generate self certified script to enable nginx with 443 port open, then have letsencrypt challenge running to validate certificates. It will also restart nginx using docker-compose to be prod ready without further action required.
+It will first generate **self certified certificates** to enable nginx with 443 port open, then have **letsencrypt challenge** running to validate certificates. It will automatically start nginx using docker-compose without further action required.
 
 ``` bash
 #!/bin/bash
@@ -307,8 +305,8 @@ docker-compose exec nginx nginx -s reload
 
 My personnal setup is currently save within a github repo publicly available at [https://github.com/sebastienbarbier/config-proxy](https://github.com/sebastienbarbier/config-proxy)
 
-You should now be able to run your VPN with all traffic redirected through it, use pihole to block DNS requests, and then access pihole dashboard using https.
+You should now be able to redirect all your traffic through your VPN, and configure pi-hole over https to block unexpected DNS requests.
 
-Next step for me was to connect my Synology NAS direclty to the VPN providing so access from my home without configuring any router or routing.
+Best part of such infrastructure is the fact it allowed me to connect my NAS direclty to the VPN so I could access it from anywhere without configuring my router.
 
 Hope this was helpful.
