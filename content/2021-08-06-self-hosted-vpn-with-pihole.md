@@ -309,4 +309,4 @@ You should now be able to redirect all your traffic through your VPN, and config
 
 Best part of such infrastructure is the fact it allowed me to connect my NAS direclty to the VPN so I could access it from anywhere without configuring my router.
 
-Hope this was helpful.
+Hope this was helpful, thanks for reading.
