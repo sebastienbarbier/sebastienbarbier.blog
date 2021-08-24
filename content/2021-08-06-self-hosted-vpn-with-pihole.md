@@ -1,8 +1,8 @@
-Title: Self hosted VPN with pihole
+Title: Self hosted VPN with pi-hole
 Date: 2021-08-06
 Category: self-hosting
 Tags: blog
-Slug: self-hosted-vpn-with-pihole
+Slug: self-hosted-vpn-with-pi-hole
 Authors: Sébastien Barbier
 Summary: Secure your internet with a self hosted vpn
 
