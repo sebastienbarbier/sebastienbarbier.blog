@@ -41,9 +41,8 @@ sudo deluser ubuntu
 
 install docker : https://docs.docker.com/engine/install/ubuntu/
 
+Use [from/edwin monitor](https://github.com/fromedwin/monitor) repository.
 
 ## LOKI
 
 https://medium.com/@moeenz/dockerized-django-logging-via-grafana-loki-48464d13f8cb
-
-
