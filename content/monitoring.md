@@ -34,11 +34,6 @@ Node-exporter can run on background but need to restart with server. TODO
 Using docker image, prometheus can run locally really easiy
 
 
-
-User : user-Ke78s92vCQ78
-Mdp : ys4hC7FMmPwxcgj9xV7QNPDQZXHMQ2bm
-
-
 ## INSTALLATION
 
 sudo adduser sbarbier
@@ -46,9 +41,8 @@ sudo deluser ubuntu
 
 install docker : https://docs.docker.com/engine/install/ubuntu/
 
+Use [from/edwin monitor](https://github.com/fromedwin/monitor) repository.
 
 ## LOKI
 
 https://medium.com/@moeenz/dockerized-django-logging-via-grafana-loki-48464d13f8cb
-
-
