@@ -159,15 +159,40 @@ docker ps
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' pi_hole_container_id
 ```
 
+However, docker will dynamicaly reassign IPs and break static configurations. To avoid such issue, docker-compose needs to define a network description.
+
+```yaml
+networks:
+  myvlan:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1
+```
+
+Add myvlan as description to all containers
+
+```yaml
+    networks:
+      - myvlan
+```
+
+Force pihole to use a specific ip address
+
+```yaml
+    networks:
+      myvlan:
+        ipv4_address: 10.5.0.6
+```
+
 Then add within `/openvpn-data/confopenvpn.conf`
 
 ```bash
 # push "dhcp-option DNS 8.8.8.8"
 # push "dhcp-option DNS 8.8.4.4"
-push "dhcp-option DNS 172.22.0.2"
+push "dhcp-option DNS 10.5.0.6"
 ```
-
-One suggestion for improvement would be to have docker providing static ip for this container.
 
 ## Nginx with https access to pi-hole admin panel
 
