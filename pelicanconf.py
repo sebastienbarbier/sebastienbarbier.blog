@@ -40,5 +40,6 @@ SOCIAL = (('Twitter', 'https://www.twitter.com/SebBarbier'),
 
 DEFAULT_PAGINATION = 10
 
+CSS_FILE = 'main.css'
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
