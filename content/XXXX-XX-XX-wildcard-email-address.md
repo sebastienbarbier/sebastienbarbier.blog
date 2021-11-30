@@ -4,4 +4,5 @@ Category: self-hosting
 Tags: blog
 Slug: wildcard-email-address
 Authors: Sébastien Barbier
+Status: draft
 Summary: 

@@ -4,4 +4,5 @@ Category: self-hosting
 Tags: blog
 Slug: 1-equals-0-and-2-equals-1
 Authors: Sébastien Barbier
+Status: draft
 Summary: 

@@ -109,3 +109,4 @@ output/
 pelican.pid
 srv.pid
 
+.DS_Store
