@@ -5,7 +5,7 @@ This repository host [blog.sebastienbarbier.com](https://blog.sebastienbarbier.c
 ## Local installation using virtualenv 
 
 ```
-$> virtualenv -p python3 apps
+$> python3 -m venv apps
 
 $> source apps/bin/activate
 
