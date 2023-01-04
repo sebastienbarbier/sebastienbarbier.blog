@@ -1,10 +1,11 @@
 Title: Self hosted VPN with pi-hole
 Date: 2021-08-06
 Category: self-hosting
-Tags: blog
+Tags: vpn
 Slug: self-hosted-vpn-with-pi-hole
 Authors: Sébastien Barbier
-Summary: Secure your internet with a self hosted vpn
+Summary: Travelling involve the need to rely on public wifi which can often be insecure. As a VPN offer protection by encrypting all communications, it however require full trust within its provider. My solution consists of running a self-hosted VPN on a cheap virtual private server. This article is how I did it.
+
 
 Travelling involve the need to rely on public wifi which can often be insecure. As a VPN offer protection by encrypting all communications, it however require full trust within its provider. My solution consists of running a self-hosted VPN on a cheap virtual private server. This article is how I did it.
 

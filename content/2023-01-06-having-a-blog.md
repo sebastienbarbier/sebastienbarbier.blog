@@ -1,0 +1,26 @@
+Title: Having a blog in 2023
+Date: 2023-01-06
+Category: lifestyle
+Tags: blog
+Status: draft
+Slug: having-a-blog-in-2023
+Authors: Sébastien Barbier
+Summary: In this blog post, the writer discusses the decision to start a tech blog as a way to improve their online presence, writing skills, and knowledge of tech topics, while also exploring new tools and sharing their experiences with readers.
+
+*TLDR: Going freelance, this blog will let me practice my writting and building content. It won't be perfect at the beginning, but the idea is to make bad posts so one day I could make good ones.*
+
+Starting a tech blog has been something I've been considering for a while now. As a freelancer in the tech industry, I'm always looking for ways to improve my online presence and stay up-to-date on the latest developments in the field. I figured that starting a blog would be a great way to do both.
+
+## Hands-on learning
+
+There are so many benefits to starting a tech blog. Not only does it give me the opportunity to practice my writing and share my thoughts and ideas with a wider audience, but it also allows me to dive deeper into various tech topics and learn more about what's happening in the industry.
+
+In this blog, I plan to cover a range of tech topics and try to post at least once a week (probably Fridays). I'm a firm believer in the value of hands-on learning, and I think that starting a blog is the perfect way for me to put this into practice. By actually trying out new technologies and tools and sharing my experiences with others, I can not only learn more about them, but also help others who might be interested in trying them out as well.
+
+## Self hosting
+
+Self-hosting your content is crucial for maintaining control and ownership. This is especially important in today's digital age, where platforms like Twitter have faced controversy over the censorship and removal of certain content. By self-hosting, you ensure that your blog is always available and that you have the final say on what is published. Plus, you have complete control over your data and privacy.
+
+## Thanks
+
+Overall, I'm looking forward to this new journey and the opportunity to share my thoughts and experiences with all of you. I hope you'll join me on this adventure and won't be too often cringed by my mistakes or me trying.
