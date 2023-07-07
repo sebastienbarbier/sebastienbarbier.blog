@@ -2,10 +2,12 @@ Title: Having a blog in 2023
 Date: 2023-01-06
 Category: lifestyle
 Tags: blog
-Status: draft
 Slug: having-a-blog-in-2023
 Authors: Sébastien Barbier
 Summary: In this blog post, the writer discusses the decision to start a tech blog as a way to improve their online presence, writing skills, and knowledge of tech topics, while also exploring new tools and sharing their experiences with readers.
+
+
+<!-- Status: draft -->
 
 *TLDR: Going freelance, this blog will let me practice my writting and building content. It won't be perfect at the beginning, but the idea is to make bad posts so one day I could make good ones.*
 
