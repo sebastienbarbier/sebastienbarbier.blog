@@ -1,0 +1,38 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build && next export",
+    "start": "next start",
+    "predeploy": "./scripts/predeploy.sh",
+    "deploy": "./scripts/deploy.sh"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/server": "^11.10.0",
+    "@emotion/styled": "^11.10.5",
+    "@mdx-js/loader": "^2.1.5",
+    "@mui/icons-material": "^5.11.0",
+    "@mui/material": "^5.11.0",
+    "@mui/styled-engine-sc": "^5.11.0",
+    "@next/mdx": "^12.3.4",
+    "child_process": "^1.0.2",
+    "date-fns": "^2.29.3",
+    "extracted-loader": "^1.0.7",
+    "file-loader": "^6.2.0",
+    "gray-matter": "^4.0.3",
+    "ignore-loader": "^0.1.2",
+    "img-loader": "^4.0.0",
+    "next": "^13.0.6",
+    "next-compose-plugins": "^2.2.1",
+    "next-optimized-images": "^2.6.2",
+    "next-transpile-modules": "^10.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "remark": "^14.0.2",
+    "remark-html": "^15.0.1",
+    "sass": "^1.57.1",
+    "styled-components": "^5.3.6",
+    "url-loader": "^4.1.1"
+  }
+}
