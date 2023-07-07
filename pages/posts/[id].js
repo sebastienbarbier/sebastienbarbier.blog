@@ -34,7 +34,7 @@ export default function Post({ postData }) {
   return (
     <Layout>
       <Head>
-        <title>{postData.title}</title>
+        <title>{postData.title} - Sebastien Barbier - Blog</title>
         <meta name="og:title" content={postData.title} />
       </Head>
       <Container>

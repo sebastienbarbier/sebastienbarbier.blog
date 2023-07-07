@@ -21,7 +21,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
 const name = 'Sebastienbarbier'
-export const siteTitle = 'Sebastienbarbier - Blog'
+export const siteTitle = 'Sebastien Barbier - Blog'
 
 export default function Layout({ children, home }) {
 
