@@ -4,6 +4,8 @@ import Link from 'next/link'
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 
@@ -38,18 +40,20 @@ export default function Home({ allPostsData }) {
       <Container>
       
         <Grid container justifyContent="center">
-          <Grid item xs={12} sm={10} md={6}>
+          <Grid item xs={12} sm={12} md={12}>
             <section className={utilStyles.headingMd}>
             </section>
             <h2>Latest articles</h2>
             <List>
-             {allPostsData.map(({ id, date, title }) => (
+             {allPostsData.map(({ id, date, title, description }) => (
               <ListItemButton key={id} divider={true} component={Link} href={`/posts/${id}`} alignItems="flex-start">
-
-                  <ListItemText
-                    primary={title}
-                    secondary={<Date dateString={date} />}
-                  />
+                <Stack direction={{xs: 'column', sm: 'row' }} sx={{ paddingTop: 2, paddingBottom: 2 }}>
+                  <Box sx={{ textTransform: 'uppercase', fontSize: '.9em', marginRight: 8, marginBottom: 1, width: 150 }}><Date dateString={date} formatString={`LLL dd yyyy`} /></Box>
+                  <Box sx={{ width: '100%'}}>
+                    <Typography sx={{ fontSize: '1.1em', fontWeight: 'bold', paddingBottom: 1 }}>{title}</Typography>
+                    <Typography sx={{ fontSize: '0.9em' }}>{ description }</Typography>
+                  </Box>
+                </Stack>
               </ListItemButton>
               ))}
             </List>
