@@ -19,7 +19,6 @@ import Layout, { siteTitle } from '../components/layout'
 import Date from '../components/date'
 
 import { getSortedPostsData } from '../lib/posts'
-import utilStyles from '../styles/utils.module.css'
 
 export async function getStaticProps() {
   const allPostsData = getSortedPostsData()
@@ -41,7 +40,7 @@ export default function Home({ allPostsData }) {
       
         <Grid container justifyContent="center">
           <Grid item xs={12} sm={12} md={12}>
-            <section className={utilStyles.headingMd}>
+            <section>
             </section>
             <h2>Latest articles</h2>
             <List>

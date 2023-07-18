@@ -8,6 +8,7 @@ import theme from '../components/theme';
 import { ThemeProvider } from '@mui/material/styles';
 import createEmotionCache from '../components/createEmotionCache';
 
+import '../styles/_theme.scss'
 import '../styles/global.scss'
 
 const clientSideEmotionCache = createEmotionCache();

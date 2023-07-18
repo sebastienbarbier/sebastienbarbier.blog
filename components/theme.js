@@ -1,7 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 import { cyan, orange, green, blue, red, blueGrey, indigo, pink, brown } from '@mui/material/colors';
 
-
 // Create a theme instance.
 const theme = createTheme({
     typography: {
