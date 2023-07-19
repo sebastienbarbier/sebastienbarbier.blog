@@ -3,7 +3,7 @@ import Document, { Html, Head, Main, NextScript } from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
 import theme from '../components/theme';
 import createEmotionCache from '../components/createEmotionCache';
-  
+
 const name = 'SebastienBarbier'
 export const siteTitle = 'SebastienBarbier - Blog'
 
@@ -31,6 +31,15 @@ export default class MyDocument extends Document {
                     />
                     <meta name="og:title" content={siteTitle} />
                     <meta name="twitter:card" content="summary_large_image" />
+                    <link
+                      rel="preload"
+                      href="https://unpkg.com/prismjs@0.0.1/themes/prism-okaidia.css"
+                      as="script"
+                    />
+                    <link
+                      href={`https://unpkg.com/prismjs@0.0.1/themes/prism-okaidia.css`}
+                      rel="stylesheet"
+                    />
                     {/* PWA primary color */}
                     {/* Inject MUI styles first to match with the prepend: true configuration. */}
                     { this.props.emotionStyleTags }
