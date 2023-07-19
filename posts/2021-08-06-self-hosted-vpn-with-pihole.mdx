@@ -251,7 +251,7 @@ server {
 
 It will first generate **self certified certificates** to enable nginx with 443 port open, then have **letsencrypt challenge** running to validate certificates. It will automatically start nginx using docker-compose without further action required.
 
-``` bash
+```bash
 #!/bin/bash
 
 if ! [ -x "$(command -v docker-compose)" ]; then

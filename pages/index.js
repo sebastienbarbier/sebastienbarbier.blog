@@ -41,16 +41,16 @@ export default function Home({ allPostsData }) {
         <Grid container justifyContent="center">
           <Grid item xs={12} sm={12} md={12}>
             <section>
+            <h1 class="centered">Blog posts</h1>
             </section>
-            <h2>Latest articles</h2>
             <List>
              {allPostsData.map(({ id, date, title, description }) => (
               <ListItemButton key={id} divider={true} component={Link} href={`/posts/${id}`} alignItems="flex-start">
                 <Stack direction={{xs: 'column', sm: 'row' }} sx={{ paddingTop: 2, paddingBottom: 2 }}>
-                  <Box sx={{ textTransform: 'uppercase', fontSize: '.9em', marginRight: 8, marginBottom: 1, width: 150 }}><Date dateString={date} formatString={`LLL dd yyyy`} /></Box>
+                  <Box sx={{ textTransform: 'uppercase', fontSize: '1em', marginRight: 8, marginBottom: 1, width: 150, marginTop: 1, fontWeight: 500 }}><Date dateString={date} formatString={`LLL dd yyyy`} /></Box>
                   <Box sx={{ width: '100%'}}>
-                    <Typography sx={{ fontSize: '1.1em', fontWeight: 'bold', paddingBottom: 1 }}>{title}</Typography>
-                    <Typography sx={{ fontSize: '0.9em' }}>{ description }</Typography>
+                    <Typography variant="h3" sx={{ fontSize: '2.4rem', fontWeight: 'bold', paddingBottom: '0.4em' }}>{title}</Typography>
+                    <Typography sx={{ fontSize: '1rem' }}>{ description }</Typography>
                   </Box>
                 </Stack>
               </ListItemButton>

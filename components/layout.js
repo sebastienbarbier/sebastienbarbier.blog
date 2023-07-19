@@ -33,7 +33,7 @@ export default function Layout({ children, home }) {
         <Container justifyContent="space-between" alignItems="center">
           <Stack container direction="row" justifyContent="space-between" alignItems="center">
             <Link href="/" className={styles.title}>
-              <h1><img src="/images/svg/sebastienbarbier_logo.svg" alt="sebastienbarbier's logo" style={{ height: 28, marginTop: 2 }} /></h1>
+              <Box sx={{ paddingTop: 5, paddingBottom: 6}}><img src="/images/svg/sebastienbarbier_logo.svg" alt="sebastienbarbier's logo" style={{ height: 28, marginTop: 2 }} /></Box>
             </Link>
             <Stack direction="row" alignItems="center" spacing={2} display={{ xs: 'none', md: 'flex' }}>
               <Button href="https://sebastienbarbier.com" component={Link}>Visit sebastienbarbier.com</Button>
