@@ -41,7 +41,13 @@ export default function Home({ allPostsData }) {
         <Grid container justifyContent="center">
           <Grid item xs={12} sm={12} md={12}>
             <section>
-            <h1 class="centered">Blog posts</h1>
+              
+              {allPostsData.length == 0 && 
+                <h1 class="centered">Coming soon</h1>
+              }
+              {allPostsData.length > 0 && 
+                <h1 class="centered">Blog posts</h1>
+              }
             </section>
             <List>
              {allPostsData.map(({ id, date, title, description }) => (
